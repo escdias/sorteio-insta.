@@ -59,10 +59,35 @@ label{display:block;color:var(--muted);font-size:13px;margin:12px 0 7px}textarea
 <script>
 const $=id=>document.getElementById(id);
 let lastResult=[];
-function participants(){
- let list=$('entries').value.split(/\\r?\\n/).map(x=>x.trim()).filter(Boolean);
- if($('dedupe').checked){const seen=new Set();list=list.filter(x=>{const k=x.toLocaleLowerCase('pt-BR');if(seen.has(k))return false;seen.add(k);return true})}
- return list;
+function participants() {
+  const raw = $('entries').value || '';
+
+  // Normaliza as quebras de linha
+  const normalized = raw.replace(/\r\n?/g, '\n');
+
+  // Separa cada participante em uma linha
+  let list = normalized
+    .split(/\n+/)
+    .map(name => name.trim())
+    .filter(name => name.length > 0);
+
+  // Remove duplicados, se a opção estiver marcada
+  if ($('dedupe').checked) {
+    const seen = new Set();
+
+    list = list.filter(name => {
+      const key = name.toLocaleLowerCase('pt-BR');
+
+      if (seen.has(key)) {
+        return false;
+      }
+
+      seen.add(key);
+      return true;
+    });
+  }
+
+  return list;
 }
 function updateCount(){$('count').textContent=participants().length}
 $('entries').addEventListener('input',updateCount);$('dedupe').addEventListener('change',updateCount);
