@@ -5,7 +5,7 @@ on:
   push:
     paths:
       - "SorteioPro-Android/**"
-      - "sorteio-pro-offline-source.zip"
+      - "sorteio-pro-offline-source*.zip"
       - ".github/workflows/build-sorteio-pro.yml"
 
 permissions:
@@ -19,11 +19,24 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Extract Android project if needed
+        shell: bash
         run: |
+          set -euo pipefail
           if [ ! -d "SorteioPro-Android" ]; then
-            unzip -o "sorteio-pro-offline-source.zip" -d .
+            ZIP_FILE="$(find . -maxdepth 1 -type f -iname 'sorteio-pro-offline-source*.zip' -print -quit)"
+            if [ -z "$ZIP_FILE" ]; then
+              echo "ERRO: ZIP do projeto não encontrado."
+              ls -la
+              exit 1
+            fi
+            echo "Extraindo: $ZIP_FILE"
+            unzip -o "$ZIP_FILE" -d .
           fi
-          test -f "SorteioPro-Android/app/build.gradle"
+          if [ ! -f "SorteioPro-Android/app/build.gradle" ]; then
+            echo "ERRO: estrutura Android não encontrada."
+            find . -maxdepth 4 -type f | sort | head -200
+            exit 1
+          fi
 
       - name: Set up Java 17
         uses: actions/setup-java@v4
