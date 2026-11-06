@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#e83e8c">
-<title>Sorteio Insta</title>
+<meta name="theme-color" content="#171020">
+<meta name="description" content="Sorteio Pro: organize participantes, sorteie ganhadores e suplentes e gere comprovantes. Funciona localmente no navegador e no aplicativo.">
+<title>Sorteio Pro</title>
 <style>
 :root{
  --bg:#100d18;--panel:#211729;--line:#49314a;--text:#fff8fc;--muted:#c9b7c7;
@@ -13,9 +14,12 @@
 *{box-sizing:border-box}
 body{margin:0;color:var(--text);background:radial-gradient(ellipse at top,#4a1b3c 0%,#171020 42%,var(--bg) 78%);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5}
 main{width:min(900px,100%);margin:auto;padding:22px 16px 40px}
-.brand{display:flex;align-items:center;gap:12px;margin-bottom:24px}
-.logo{width:58px;height:58px;display:grid;place-items:center;border-radius:18px;font-size:28px;background:linear-gradient(135deg,var(--orange),var(--pink),var(--purple));box-shadow:0 8px 24px #e83e8c33}
-h1{margin:0;font-size:1.6rem}.brand p,.muted{color:var(--muted);margin:2px 0 0}
+.brand{display:flex;align-items:center;gap:13px;margin-bottom:24px}
+.logo{width:58px;height:58px;flex:0 0 58px;display:grid;place-items:center;border-radius:19px;font-size:35px;font-weight:900;letter-spacing:-2px;color:#fff;background:linear-gradient(135deg,var(--orange),var(--pink) 55%,var(--purple));box-shadow:0 8px 26px #e83e8c44;border:1px solid #ffffff22}
+.brand-copy{min-width:0;flex:1}
+.brand-tag{display:inline-flex;align-items:center;gap:6px;margin-top:5px;padding:4px 9px;border:1px solid #6ed9a544;border-radius:999px;color:#9ce9c3;font-size:.72rem;font-weight:700;letter-spacing:.04em}
+.brand-tag:before{content:"";width:6px;height:6px;border-radius:50%;background:#6ed9a5;box-shadow:0 0 8px #6ed9a5}
+h1{margin:0;font-size:1.6rem;letter-spacing:-.035em}.brand p,.muted{color:var(--muted);margin:2px 0 0}
 .hero{text-align:center;margin:20px 0 28px}.hero h2{font-size:clamp(1.8rem,7vw,3rem);line-height:1.15;margin:0 0 12px}.hero h2 span{background:linear-gradient(90deg,#ffd36a,#ff9abf,#cba4ff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:var(--muted);font-size:1.05rem;margin:auto;max-width:620px}
 .card{background:rgba(33,23,41,.96);border:1px solid var(--line);border-radius:26px;padding:22px;margin:18px 0;box-shadow:0 12px 30px #0003}
 h3{font-size:1.35rem;margin:0 0 16px}label{display:block;color:var(--muted);margin:14px 0 7px}
@@ -26,7 +30,12 @@ textarea{min-height:190px;resize:vertical}textarea:focus,input:focus{border-colo
 .check{display:flex;align-items:center;gap:10px;color:var(--text);margin:16px 0}.check input{width:20px;height:20px;accent-color:var(--pink)}
 .buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
 button{border:0;border-radius:16px;padding:14px 16px;font:inherit;font-weight:650;color:var(--text);cursor:pointer;min-height:52px}
-button:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#38283f;border:1px solid #60415e}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:not(:disabled){transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
+button:not(:disabled):active{transform:scale(.985);filter:brightness(1.12)}
+button:focus-visible{outline:3px solid #ffd36a;outline-offset:3px}
+.secondary{background:linear-gradient(145deg,#3b2943,#302139);border:1px solid #76556f;box-shadow:inset 0 1px #ffffff0a}
+.secondary:not(:disabled):hover{box-shadow:0 7px 18px #0003,inset 0 1px #ffffff12}
 .primary{width:100%;margin-top:14px;background:linear-gradient(100deg,var(--orange),var(--pink),var(--purple));font-size:1.1rem;box-shadow:0 8px 24px #e83e8c25}
 .hint{color:var(--muted);font-size:.92rem;margin:14px 0 0}.notice{min-height:1.5em;color:#ff9abf;margin-top:10px;font-weight:600}
 .winner-box{border:1px dashed #76556f;border-radius:20px;padding:24px 16px;text-align:center;background:#160f20;min-height:180px;overflow:hidden}
@@ -57,7 +66,7 @@ button:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#38283f;bor
 </style>
 </head>
 <body><main>
-<header class="brand"><div class="logo" aria-hidden="true">🎉</div><div><h1>Sorteio Insta</h1><p>Seu sorteio com um toque de cor</p></div></header>
+<header class="brand"><div class="logo" aria-hidden="true">S</div><div class="brand-copy"><h1>Sorteio Pro</h1><p>Sorteios simples, rápidos e transparentes</p><span class="brand-tag">PRONTO PARA USAR · MODO LOCAL</span></div></header>
 <section class="hero"><h2>Seu próximo ganhador<br><span>pode estar aqui.</span></h2><p>Organize participantes e faça o sorteio em poucos cliques.</p></section>
 <section class="card"><h3>① Participantes</h3>
 <label for="entries">Cole nomes ou @usuários — um por linha</label>
@@ -75,7 +84,7 @@ button:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#38283f;bor
 <p class="hint">A roleta vertical mostra três nomes, desacelera e para com o sorteado na faixa central.</p></section>
 <section class="card"><h3>③ Histórico de sorteios</h3><p class="muted">Os últimos sorteios ficam salvos neste navegador e aparelho.</p><ul class="history-list" id="historyList"></ul>
 <div class="buttons"><button class="secondary" id="refreshHistory" type="button">Atualizar histórico</button><button class="secondary" id="clearHistory" type="button">Apagar histórico</button></div></section>
-<p class="footer">Sorteio Insta · Ferramenta gratuita de sorteio local.<br>Os participantes são processados neste navegador.</p>
+<p class="footer">Sorteio Pro · Ferramenta de sorteio local.<br>Os participantes são processados neste navegador.</p>
 </main>
 <script>
 const $=id=>document.getElementById(id),entries=$("entries"),count=$("count"),winnersInput=$("winners"),alternatesInput=$("alternates"),dedupe=$("dedupe"),notice=$("notice"),winnerBox=$("winnerBox"),resultList=$("resultList"),copyButton=$("copy"),resetButton=$("resetResult"),drawButton=$("draw");let lastDraw=[],isDrawing=false,drawMeta=null;
@@ -161,7 +170,7 @@ function downloadReceipt(){
   ctx.fillStyle="#cdbbd0";ctx.font="25px Arial";ctx.fillText("Sorteio realizado nesta página • Comprovante gerado no aparelho",540,canvas.height-95);
   const a=document.createElement("a");a.download="comprovante-sorteio-insta.png";a.href=canvas.toDataURL("image/png");a.click();
 }
-copyButton.addEventListener("click",async()=>{if(!lastDraw.length)return;const txt=lastDraw.map(x=>`${x.type}: ${x.name}`).join("\\n");try{await navigator.clipboard.writeText(txt);notice.style.color="var(--green)";notice.textContent="Resultado copiado!"}catch{notice.style.color="var(--muted)";notice.textContent="Não foi possível copiar automaticamente."}});
+copyButton.addEventListener("click",async()=>{if(!lastDraw.length)return;const txt=lastDraw.map(x=>`${x.type}: ${x.name}`).join("\n");try{await navigator.clipboard.writeText(txt);notice.style.color="var(--green)";notice.textContent="Resultado copiado!"}catch{notice.style.color="var(--muted)";notice.textContent="Não foi possível copiar automaticamente."}});
 $("refreshHistory").addEventListener("click",renderHistory);$("clearHistory").addEventListener("click",()=>{if(confirm("Apagar todo o histórico salvo neste aparelho?")){localStorage.removeItem("sorteioInstaHistory");renderHistory()}});
 updateCount();renderHistory();
 </script></body></html>
