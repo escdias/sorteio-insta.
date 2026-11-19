@@ -16,13 +16,13 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
+      - name: Extract source package
+        run: unzip -o sorteio-pro-release-source-v2.3.0-compact.zip -d .
       - name: Decode signing key
         run: |
           echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > SorteioPro-Android/release-key.jks
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-      - name: Extract source package
-        run: unzip -o sorteio-pro-release-source-v2.3.0-compact.zip -d .
       - name: Build release APK
         run: gradle -p SorteioPro-Android :app:assembleRelease
         env:
