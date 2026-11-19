@@ -1,0 +1,39 @@
+name: Build Sorteio Pro Release APK 2.4.0
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Extract source package
+        run: unzip -o sorteio-pro-release-source-v2.4.0-compact.zip -d .
+      - name: Decode signing key into expected location
+        run: |
+          mkdir -p SorteioPro-Android/app
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > SorteioPro-Android/app/release-key.jks
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      - name: Build release APK
+        run: gradle -p SorteioPro-Android :app:assembleRelease
+        env:
+          ANDROID_KEYSTORE_PATH: release-key.jks
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Sorteio-Pro-v2.4.0-Cinematic-Reveal
+          path: SorteioPro-Android/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
