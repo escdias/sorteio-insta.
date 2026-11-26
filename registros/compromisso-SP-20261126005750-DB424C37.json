@@ -1,0 +1,22 @@
+{
+  "schema": "sorteio-pro-precommit",
+  "schemaVersion": 1,
+  "protocol": "SorteioPro-Precommit-v1",
+  "id": "SP-20261126005750-DB424C37",
+  "title": "Teste 3.1.0",
+  "prize": "Vale compras",
+  "participantCount": 4,
+  "participants": ["@ana", "@bruno", "@carla", "@diego"],
+  "participantCanonicalization": "JSON.stringify(participants) UTF-8; ordem preservada",
+  "participantHashAlgorithm": "SHA-256",
+  "participantHash": "79154eee21dffe4202c10d239e2a98cfa8c9c2d1b17e66926f2a2db9161397e4",
+  "seedCommitmentAlgorithm": "SHA-256 da string hexadecimal da semente",
+  "seedCommitment": "786b69743d88cb46fea370d0b653436b8b233111ac656d9d51500a8183e5a601",
+  "draw": {
+    "winners": 1,
+    "alternates": 0
+  },
+  "preparedAt": "2026-11-26T00:57:50.841Z",
+  "appVersion": "3.1.0",
+  "notice": "Este registro não contém a semente. Publique-o no repositório público antes de confirmar o sorteio. A data do commit poderá ser consultada no histórico público do GitHub; isso não equivale a um carimbo de tempo criptográfico independente."
+} 
